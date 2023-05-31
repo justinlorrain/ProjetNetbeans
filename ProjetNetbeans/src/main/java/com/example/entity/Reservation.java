@@ -8,9 +8,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.util.Date;
 
@@ -19,17 +22,16 @@ import java.util.Date;
  * @author justi
  */
 @Entity
-@Table(name = "Users")
-
-public class User {
+@Table(name = "Reservations")
+public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "first_name", length = 30)
-    private String firstName;
-    @Column(name = "last_name")
-    private String lastName;
+    @Column(name = "numero")
+    private Double numero;
+    @Column(name = "prix")
+    private Double Prix;
     @Column(name = "email")
     private String email;
     @Column(name = "adresse")
@@ -39,19 +41,25 @@ public class User {
     @Column(name = "date")
     private Date Date;
     @Enumerated(EnumType.STRING)
-    private UserRole Role;
+    private StatutReservation Status;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "Restaurant", nullable = false)
+    private Restaurant restaurant;
 
-    public User() {
+    public Reservation() {
     }
 
-    public User(String firstName, String lastName, String email, String Adresse, String Telephone, Date Date, UserRole Role) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Reservation(Double numero, Double Prix, String email, String Adresse, String Telephone, Date Date, StatutReservation Status) {
+        this.numero = numero;
+        this.Prix = Prix;
         this.email = email;
         this.Adresse = Adresse;
         this.Telephone = Telephone;
         this.Date = Date;
-        this.Role = Role;
+        this.Status = Status;
     }
 
     public Long getId() {
@@ -62,20 +70,20 @@ public class User {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public Double getNumero() {
+        return numero;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setNumero(Double numero) {
+        this.numero = numero;
     }
 
-    public String getLastName() {
-        return lastName;
+    public Double getPrix() {
+        return Prix;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setPrix(Double Prix) {
+        this.Prix = Prix;
     }
 
     public String getEmail() {
@@ -110,12 +118,28 @@ public class User {
         this.Date = Date;
     }
 
-    public UserRole getRole() {
-        return Role;
+    public StatutReservation getStatus() {
+        return Status;
     }
 
-    public void setRole(UserRole Role) {
-        this.Role = Role;
+    public void setStatus(StatutReservation Status) {
+        this.Status = Status;
     }
-    
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
+  
 }
